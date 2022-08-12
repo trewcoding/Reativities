@@ -5,13 +5,12 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import { Button } from '@mui/material';
+import { useStore } from '../stores/store';
 
-interface Props {
-  openForm: () => void;
-}
+export default function NavBar() {
 
+const {activityStore} = useStore();
 
-export default function NavBar({openForm}: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -25,7 +24,7 @@ export default function NavBar({openForm}: Props) {
         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', backgroundColor: 'red', minHeight: 40 }}>
             <Typography sx={{ minWidth: 100 }}>Reactivities</Typography>
             <Typography sx={{ minWidth: 100 }}>Activities</Typography>
-            <Button onClick={openForm} variant="outlined" style={{backgroundColor: 'blue', textDecorationColor: 'black'}}>Create Activity</Button>
+            <Button onClick={() => activityStore.openForm()} variant="outlined" style={{backgroundColor: 'blue', textDecorationColor: 'black'}}>Create Activity</Button>
             <Tooltip title="Account settings">
             <IconButton
                 onClick={handleClick}

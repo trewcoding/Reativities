@@ -1,13 +1,15 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material'
-import { Activity } from '../../../app/models/activity'
+import { Card, CardMedia, CardContent, Typography, CardActions, Button, CircularProgress } from '@mui/material'
+import LoadingComponent from '../../../app/layout/LoadingComponents';
+import { useStore } from '../../../app/stores/store'
 
-interface Props {
-    activity: Activity
-    cancelSelectActivity: () => void;
-    openForm: (id: string) => void;
-}
 
-export default function ActivityDetails({ activity, cancelSelectActivity, openForm }: Props) {
+
+export default function ActivityDetails() {
+    const { activityStore } = useStore();
+    const { selectedActivity: activity, openForm, cancelSelectedActivity } = activityStore;
+
+    if (!activity) return <LoadingComponent content='Loading'/>;
+
     return (
         <Card>
             <CardMedia
@@ -28,7 +30,7 @@ export default function ActivityDetails({ activity, cancelSelectActivity, openFo
             </CardContent>
             <CardActions>
                 <Button onClick={() => openForm(activity.id)} size="small">Edit</Button>
-                <Button onClick={cancelSelectActivity} size="small">Cancel</Button>
+                <Button onClick={cancelSelectedActivity} size="small">Cancel</Button>
             </CardActions>
         </Card>
     )

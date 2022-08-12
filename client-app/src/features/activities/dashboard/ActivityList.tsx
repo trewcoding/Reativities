@@ -2,15 +2,14 @@ import { Box, Button, Card, CardActions, CardContent, List, Typography } from '@
 import { Activity } from '../../../app/models/activity';
 import { LoadingButton } from '@mui/lab';
 import { SyntheticEvent, useState } from 'react';
+import { useStore } from '../../../app/stores/store';
+import { observer } from 'mobx-react-lite';
 
-interface Props {
-    activities: Activity[];
-    selectActivity: (id: string) => void;
-    deleteActivity: (id: string) => void;
-    submitting: boolean;
-}
+export default observer(function ActivityList() {
+    const { activityStore } = useStore();
+    const {deleteActivity, activitiesByDate, loading} = activityStore;
 
-export default function ActivityList({ activities, selectActivity, deleteActivity, submitting }: Props) {
+
     const [target, setTarget] = useState('');
     
     function handleActivityDelete(e: SyntheticEvent<HTMLButtonElement>,id: string) {
@@ -20,7 +19,7 @@ export default function ActivityList({ activities, selectActivity, deleteActivit
 
     return (
         <List>
-            {activities.map(activity => (
+            {activitiesByDate.map(activity => (
                 <Card key={activity.id} component='div' sx={{ bgcolor: 'yellow' }}>
                     <CardContent>
                         <Typography variant='h4'>{activity.title} </Typography>
@@ -37,10 +36,10 @@ export default function ActivityList({ activities, selectActivity, deleteActivit
                             justifyContent="flex-end"
                             alignItems="flex-end"
                         >
-                            <Button variant='text' color='success' size='medium' onClick={() => selectActivity(activity.id)}>View</Button>
+                            <Button variant='text' color='success' size='medium' onClick={() => activityStore.selectActivity(activity.id)}>View</Button>
                             <LoadingButton
                                 id={activity.id}
-                                loading={submitting && target === activity.id} 
+                                loading={loading && target === activity.id} 
                                 variant='text' 
                                 color='error' 
                                 size='medium' 
@@ -56,4 +55,4 @@ export default function ActivityList({ activities, selectActivity, deleteActivit
             ))}
         </List>
     )
-}
+})

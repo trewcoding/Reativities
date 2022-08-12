@@ -1,16 +1,11 @@
-import { Box, Button, ButtonGroup, FormControl, FormGroup, TextField } from '@mui/material';
+import { Box, Button, ButtonGroup, FormGroup, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { ChangeEvent, useState } from 'react';
-import { Activity } from '../../../app/models/activity';
+import { useStore } from '../../../app/stores/store';import { observer } from 'mobx-react-lite';
 
-interface Props {
-    activity: Activity | undefined;
-    closeForm: () => void;
-    createOrEdit: (activity: Activity) => void;
-    submitting: boolean;
-}
-
-export default function ActivityForm({ activity: selectedActivity, closeForm, createOrEdit, submitting }: Props) {
+export default observer(function ActivityForm() {
+    const {activityStore} = useStore();
+    const {selectedActivity, closeForm, createActivity, updateActivity, loading} = activityStore;
 
     const initalState = selectedActivity ?? {
         id: '',
@@ -25,7 +20,7 @@ export default function ActivityForm({ activity: selectedActivity, closeForm, cr
     const [activity, setActivity] = useState(initalState);
 
     function handleSubmit() {
-        createOrEdit(activity);
+        activity.id ? updateActivity(activity) : createActivity(activity);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -82,11 +77,11 @@ export default function ActivityForm({ activity: selectedActivity, closeForm, cr
                 onChange={handleInputChange}
             />
             <ButtonGroup>
-                <LoadingButton loading={submitting} onClick={handleSubmit} type='submit' color='success'>Submit</LoadingButton>
+                <LoadingButton loading={loading} onClick={handleSubmit} type='submit' color='success'>Submit</LoadingButton>
                 <Button onClick={closeForm} color='error'>Cancel</Button>
             </ButtonGroup>
             </FormGroup>
         </Box>
 
     )
-}
+})
