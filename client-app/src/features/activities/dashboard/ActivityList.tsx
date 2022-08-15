@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 export default observer(function ActivityList() {
     const { activityStore } = useStore();
     const {deleteActivity, activitiesByDate, loading} = activityStore;
+    const baseUrl = 'http://localhost:3000'
 
 
     const [target, setTarget] = useState('');
@@ -36,7 +37,7 @@ export default observer(function ActivityList() {
                             justifyContent="flex-end"
                             alignItems="flex-end"
                         >
-                            <Button variant='text' color='success' size='medium' onClick={() => activityStore.selectActivity(activity.id)}>View</Button>
+                            <Button variant='text' color='success' size='medium' href={`${baseUrl}/activities/${activity.id}`}>View</Button>
                             <LoadingButton
                                 id={activity.id}
                                 loading={loading && target === activity.id} 

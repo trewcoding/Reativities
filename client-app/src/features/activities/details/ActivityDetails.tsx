@@ -1,14 +1,22 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, CircularProgress } from '@mui/material'
+import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material'
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import LoadingComponent from '../../../app/layout/LoadingComponents';
 import { useStore } from '../../../app/stores/store'
 
 
 
-export default function ActivityDetails() {
+export default observer(function ActivityDetails() {
     const { activityStore } = useStore();
-    const { selectedActivity: activity, openForm, cancelSelectedActivity } = activityStore;
+    const { selectedActivity: activity, loadActivity, loadingInitial} = activityStore;
+    const {id} = useParams<{id: string}>();
 
-    if (!activity) return <LoadingComponent content='Loading'/>;
+    useEffect(() => {
+        if (id) loadActivity(id);
+    }, [id, loadActivity]);
+
+    if (loadingInitial || !activity) return <LoadingComponent content='Loading'/>;
 
     return (
         <Card>
@@ -29,9 +37,9 @@ export default function ActivityDetails() {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button onClick={() => openForm(activity.id)} size="small">Edit</Button>
-                <Button onClick={cancelSelectedActivity} size="small">Cancel</Button>
+                <Button href={`/manage/${activity.id}`} size="small">Edit</Button>
+                <Button href={`/activities`} size="small">Cancel</Button>
             </CardActions>
         </Card>
     )
-}
+})
