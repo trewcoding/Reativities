@@ -1,10 +1,10 @@
-import { Container, Link } from '@mui/material';
+
+import { Container, Typography } from '@mui/material';
 
 export default function HomePage() {
     return (
-        <Container sx={{marginTop: '7em'}}>
-            <h1>Home Page</h1>
-            <h3>Go to <Link href='/activities'>Activities</Link></h3>
+        <Container sx={{marginTop: '7em'}} className='masthead'>
+            <Typography variant='h2'> Hello</Typography>
         </Container>
     )
 }

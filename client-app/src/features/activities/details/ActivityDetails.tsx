@@ -1,9 +1,13 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material'
+import { Grid } from '@mui/material'
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import LoadingComponent from '../../../app/layout/LoadingComponents';
 import { useStore } from '../../../app/stores/store'
+import ActivityDetailedChat from './ActivityDetailedChat';
+import ActivityDetailedHeader from './ActivityDetailedHeader';
+import ActivityDetailedInfo from './ActivityDetailedInfo';
+import ActivityDetailedSidebar from './ActivityDetailedSideBar';
 
 
 
@@ -19,27 +23,15 @@ export default observer(function ActivityDetails() {
     if (loadingInitial || !activity) return <LoadingComponent content='Loading'/>;
 
     return (
-        <Card>
-            <CardMedia
-                component="img"
-                height="140"
-                image={`/assets/categoryImages/${activity.category}.jpg`}
-            />
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    {activity.title}
-                </Typography>
-                <Typography variant="h6" component="div">
-                    {activity.date}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {activity.description}
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button href={`/manage/${activity.id}`} size="small">Edit</Button>
-                <Button href={`/activities`} size="small">Cancel</Button>
-            </CardActions>
-        </Card>
+        <Grid container={true} spacing={2}>
+            <Grid item xs={8}>
+                <ActivityDetailedHeader activity={activity} />
+                <ActivityDetailedInfo activity={activity}/>
+                <ActivityDetailedChat />
+            </Grid>
+            <Grid item xs={4}>
+                <ActivityDetailedSidebar />
+            </Grid>
+        </Grid>
     )
 })

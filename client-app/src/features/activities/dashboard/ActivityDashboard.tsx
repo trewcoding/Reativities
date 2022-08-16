@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import LoadingComponent from '../../../app/layout/LoadingComponents';
 import { useStore } from '../../../app/stores/store';
+import ActivityFilters from './ActivityFilters';
 import ActivityList from './ActivityList';
 
 export default observer(function ActivityDashboard() {
@@ -17,12 +18,12 @@ export default observer(function ActivityDashboard() {
     if (activityStore.loadingInitial) return <LoadingComponent content='Loading App' />
     
     return (
-        <Grid columnSpacing={10} container spacing={2} padding={5}>
+        <Grid container spacing={2} padding={5}>
             <Grid item xs={8}>
                 <ActivityList/>
             </Grid>
             <Grid item xs={4}>
-                <h2>Activity Filters</h2>
+                <ActivityFilters />
             </Grid>
         </Grid>
 
